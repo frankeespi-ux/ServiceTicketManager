@@ -7,13 +7,15 @@ public class ServiceTicketManager {
     private final TicketRepository repository;
     private final Scanner scanner;
 
-    public ServiceTicketManager() {
-        this.repository = new TicketRepository();
-        this.scanner = new Scanner(System.in);
+    public ServiceTicketManager(TicketRepository repository, Scanner scanner) {
+        this.repository = repository;
+        this.scanner = scanner;
     }
 
     public static void main(String[] args) {
-        ServiceTicketManager app = new ServiceTicketManager();
+        Scanner scanner = new Scanner(System.in);
+        TicketRepository repo = new InMemoryTicketRepository();
+        ServiceTicketManager app = new ServiceTicketManager(repo, scanner);
         app.run();
     }
 
@@ -127,7 +129,13 @@ public class ServiceTicketManager {
         System.out.println("Current ticket: " + ticket);
         System.out.print("New status (OPEN, IN_PROGRESS, CLOSED): ");
         TicketStatus newStatus = readStatus();
-        ticket.setStatus(newStatus);
-        System.out.println("Updated ticket: " + ticket);
+
+        try {
+            //the new method instead of just setting the status, it will log the change and then update the status
+            ticket.advanceStatus(newStatus);
+            System.out.println("Updated ticket: " + ticket);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
