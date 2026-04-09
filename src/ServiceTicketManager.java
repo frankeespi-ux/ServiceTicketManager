@@ -31,6 +31,7 @@ public class ServiceTicketManager {
                 case "2" -> listAllTickets();
                 case "3" -> filterTicketsByStatus();
                 case "4" -> updateTicketStatus();
+                case "5" -> filterTicketsByPriority();
                 case "0" -> {
                     System.out.println("Exiting. Goodbye.");
                     running = false;
@@ -47,6 +48,7 @@ public class ServiceTicketManager {
         System.out.println("2. List all tickets");
         System.out.println("3. Filter tickets by status");
         System.out.println("4. Update ticket status");
+        System.out.println("5. Filter tickets by priority");
         System.out.println("0. Exit");
         System.out.print("Enter choice: ");
     }
@@ -91,6 +93,19 @@ public class ServiceTicketManager {
         List<Ticket> tickets = repository.findByStatus(status);
         if (tickets.isEmpty()) {
             System.out.println("No tickets with status " + status + ".");
+        } else {
+            tickets.forEach(System.out::println);
+        }
+    }
+
+    private void filterTicketsByPriority() {
+        System.out.print("Priority (LOW, MEDIUM, HIGH): ");
+        TicketPriority priority = readPriority();
+
+        List<Ticket> tickets = repository.findByPriority(priority);
+
+        if (tickets.isEmpty()) {
+            System.out.println("No tickets with priority " + priority + ".");
         } else {
             tickets.forEach(System.out::println);
         }

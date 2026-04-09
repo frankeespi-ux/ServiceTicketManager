@@ -7,4 +7,5 @@ public interface TicketRepository {
     List<Ticket> getAllTickets();
     Optional<Ticket> findById(int id);
     List<Ticket> findByStatus(TicketStatus status);
+    List<Ticket> findByPriority(TicketPriority priority);
 }

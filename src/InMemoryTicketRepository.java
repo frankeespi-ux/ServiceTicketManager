@@ -33,4 +33,11 @@ public class InMemoryTicketRepository implements TicketRepository {
                 .filter(t -> t.getStatus() == status)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Ticket> findByPriority(TicketPriority priority) {
+        return tickets.stream()
+                .filter(t -> t.getPriority() == priority)
+                .collect(Collectors.toList());
+    }
 }
